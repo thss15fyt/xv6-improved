@@ -21,11 +21,15 @@ OBJS = \
 	picirq.o\
 	pipe.o\
 	proc.o\
+  proc_generic.o\
+  proc_init.o\
+  proc_rw.o\
 	sleeplock.o\
 	spinlock.o\
 	string.o\
 	swtch.o\
 	syscall.o\
+	tui.o\
 	sysfile.o\
 	sysproc.o\
 	timer.o\

@@ -3,7 +3,6 @@
 #include "xv6/types.h"
 #include "xv6/user.h"
 #include "xv6/fcntl.h"
-#include "xv6/proc_fs.h"
 
 // Parsed command representation
 #define EXEC  1
@@ -134,9 +133,6 @@ runcmd(struct cmd *cmd)
 int
 getcmd(char *buf, int nbuf)
 {
-    if(procfs){
-        printf(2, "proc/");
-    }
     printf(2, "$ ");
     memset(buf, 0, nbuf);
     gets(buf, nbuf);
@@ -161,15 +157,9 @@ main(void)
 
     // Read and run input commands.
     while (getcmd(buf, sizeof(buf)) >= 0) {
-        if(procfs)
-            proc_cmd(buf);
         if (buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' ') {
             // Chdir must be called by the parent, not the child.
             buf[strlen(buf) - 1] = 0; // chop \n
-            if (buf[3] == 'p' && buf[4] == 'r' && buf[5] == 'o' && buf[6] == 'c') {
-                procfs = 1;
-                continue;
-            }
             if (chdir(buf + 3) < 0)
                 printf(2, "cannot cd %s\n", buf + 3);
             continue;
